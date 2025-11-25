@@ -72,7 +72,7 @@ const main = (data: string) =>
         .split(/\r?\n/g)
         .map(line => {
             const [id, numbers] = line.split(":") as [string, string]
-            return { id, spine: SpineSegment.createSpine(numbers.split(",").map(Number)) }
+            return { id: +id, spine: SpineSegment.createSpine(numbers.split(",").map(Number)) }
         })
         .sort(({ id: aid, spine: a }, { id: bid, spine: b }) => {
             const aq = a.quality
@@ -91,7 +91,7 @@ const main = (data: string) =>
                 segB = segB.next
             }
         })
-        .map(({ id }) => +id)
+        .map(({ id }) => id)
         .reduce((acc, cur, idx) => acc + cur * (idx + 1))
 
 console.log("Example:", main(readFileSync(join(__dirname, "example.txt"), "utf8")))

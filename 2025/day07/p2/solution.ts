@@ -17,7 +17,7 @@ const main = (data: string) => {
             }
             return true
         })
-        .map(({ id }) => +id)
+        .map(({ id }) => id)
         .reduce((acc, id) => acc + id)
 }
 
