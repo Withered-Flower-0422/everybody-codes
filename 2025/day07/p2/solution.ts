@@ -5,7 +5,7 @@ const main = (data: string) => {
     const [namesStr, rulesStr] = data.split(/\r?\n\r?\n/g) as [string, string]
     const names = namesStr.split(",").map((name, id) => ({ id: id + 1, name }))
     const rules = rulesStr.split(/\r?\n/g).reduce((acc, r) => {
-        const [letter, nextLetters] = r.split(">").map(s => s.trim()) as [string, string]
+        const [letter, nextLetters] = r.split(" > ") as [string, string]
         acc[letter] = new Set(nextLetters.split(","))
         return acc
     }, {} as Record<string, Set<string>>)

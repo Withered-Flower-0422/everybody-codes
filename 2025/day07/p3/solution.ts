@@ -2,15 +2,14 @@ import { readFileSync } from "fs"
 import { join } from "path"
 
 const getNext = (name: string, rules: Record<string, string[]>): string[] => {
-    if (name.length >= 11) return []
-    if (!rules[name.at(-1)!]) return []
+    if (name.length >= 11 || !rules[name.at(-1)!]) return []
     return rules[name.at(-1)!]!.map(n => name + n)
 }
 
 const main = (data: string) => {
     const [namesStr, rulesStr] = data.split(/\r?\n\r?\n/g) as [string, string]
     const rules = rulesStr.split(/\r?\n/g).reduce((acc, r) => {
-        const [letter, nextLetters] = r.split(">").map(s => s.trim()) as [string, string]
+        const [letter, nextLetters] = r.split(" > ") as [string, string]
         acc[letter] = nextLetters.split(",")
         return acc
     }, {} as Record<string, string[]>)
@@ -21,13 +20,13 @@ const main = (data: string) => {
         return true
     })
 
-    const res: string[] = []
+    const res = new Set<string>()
     while (names.length) {
         const name = names.shift()!
-        if (name.length >= 7) res.push(name)
+        if (name.length >= 7) res.add(name)
         names.push(...getNext(name, rules))
     }
-    return new Set(res).size
+    return res.size
 }
 
 console.log("Example:", main(readFileSync(join(__dirname, "example.txt"), "utf8")))
