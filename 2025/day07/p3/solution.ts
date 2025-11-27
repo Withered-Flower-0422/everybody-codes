@@ -1,10 +1,8 @@
 import { readFileSync } from "fs"
 import { join } from "path"
 
-const getNext = (name: string, rules: Record<string, string[]>): string[] => {
-    if (name.length >= 11 || !rules[name.at(-1)!]) return []
-    return rules[name.at(-1)!]!.map(n => name + n)
-}
+const getNext = (name: string, rules: Record<string, string[]>): string[] =>
+    name.length >= 11 || !rules[name.at(-1)!] ? [] : rules[name.at(-1)!]!.map(n => name + n)
 
 const main = (data: string) => {
     const [namesStr, rulesStr] = data.split(/\r?\n\r?\n/g) as [string, string]
